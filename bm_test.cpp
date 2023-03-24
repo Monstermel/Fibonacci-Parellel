@@ -5,9 +5,9 @@
 #include <iostream>
 #include <thread>
 
-unsigned long long fibos = 100000;
+unsigned long long fibos = 1000000;
 
-// Para calcular fibos
+// Para calcular fibos correctamente
 double binpow_dbl(double a, int n) {
     double res = 1.0;
     while (n > 0) {
@@ -20,7 +20,7 @@ double binpow_dbl(double a, int n) {
     return res;
 }
 
-// Para probar la funcion y evitar overflow
+// Para evitar overflow
 double binpow_int(int a, int n) {
     a %= 1000000;
     int res = 1;
@@ -53,25 +53,6 @@ double fibo_binet_sequential(unsigned long long n) {
     return (a - b) / sqrt(5.0);
 }
 
-// int main(void) {
-//     using std::cout;
-//     using namespace std::chrono;
-
-//     auto start_1 = high_resolution_clock::now();
-//     for (size_t i = 0; i < fibos; i++) fibo_binet_parallel(i);
-//     auto end_1 = high_resolution_clock::now();
-//     auto duration_1 = duration_cast<nanoseconds>(end_1 - start_1).count();
-//     cout << "Paralelo  : " << duration_1 << " ns" << '\n';
-
-//     auto start_2 = high_resolution_clock::now();
-//     for (size_t i = 0; i < fibos; i++) fibo_binet_sequential(i);
-//     auto end_2 = high_resolution_clock::now();
-//     auto duration_2 = duration_cast<nanoseconds>(end_2 - start_2).count();
-//     cout << "Secuencial: " << duration_2 << " ns" << '\n';
-
-//     return EXIT_SUCCESS;
-// }
-
 static void BM_fibo_sequential(benchmark::State& state) {
     for (auto _ : state) fibo_binet_sequential(fibos);
 }
@@ -80,7 +61,6 @@ static void BM_fibo_parallel(benchmark::State& state) {
     for (auto _ : state) fibo_binet_parallel(fibos);
 }
 
-// Register the function as a benchmark
 BENCHMARK(BM_fibo_sequential);
 BENCHMARK(BM_fibo_parallel);
 
